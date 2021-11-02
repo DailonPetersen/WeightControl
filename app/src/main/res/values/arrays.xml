@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="temp_array">
+        <item>temp 1</item>
+        <item>temp 2</item>
+        <item>temp 3</item>
+    </string-array>
+
+</resources>

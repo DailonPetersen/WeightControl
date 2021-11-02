@@ -5,9 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.weigthcontrol.data.dao.ExerciseDao
 import com.example.weigthcontrol.data.database.WeigthRegistrysDataBase
 import com.example.weigthcontrol.data.model.Exercise
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ExerciseRepo() {
     companion object {
@@ -19,15 +17,15 @@ class ExerciseRepo() {
         }
 
         fun insertExercise(context: Context, exercise: Exercise) {
-            val db = initializeDatabaseInstance(context)
+            initializeDatabaseInstance(context)
             CoroutineScope(Dispatchers.IO).launch {
                 INSTANCE.exerciseDao().insertExercise(exercise)
             }
         }
         private lateinit var exercise: Exercise
         fun getFirstExercise(context: Context): Exercise {
-            val db = initializeDatabaseInstance(context)
-            CoroutineScope(Dispatchers.IO).launch {
+            initializeDatabaseInstance(context)
+            runBlocking {
                 exercise = INSTANCE.exerciseDao().getFirstExercise()
             }
             return exercise
@@ -35,8 +33,8 @@ class ExerciseRepo() {
 
         private var list: List<Exercise>? = null
         fun getAllExercises(context: Context): List<Exercise>? {
-            val db = initializeDatabaseInstance(context)
-            CoroutineScope(Dispatchers.IO).launch {
+            initializeDatabaseInstance(context)
+            runBlocking {
                 list = INSTANCE.exerciseDao().getAllExercises()
             }
             return if (list != null){

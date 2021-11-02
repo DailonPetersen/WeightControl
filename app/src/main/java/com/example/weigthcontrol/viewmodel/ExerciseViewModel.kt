@@ -23,6 +23,7 @@ class ExerciseViewModel: ViewModel() {
 
     fun insertExercise(context: Context, exercise: Exercise) {
         ExerciseRepo.insertExercise(context, exercise)
+        getAllExercises(context)
     }
 
     fun getAllExercises(context: Context): MutableLiveData<List<Exercise>> {

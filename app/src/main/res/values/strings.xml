@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">WeigthControl</string>
     <string name="adicionar">Adicionar</string>
-    <string name="digite_o_nome_do_exercicio">Digite o nome do exercicio:</string>
+    <string name="pick_exercise">Escolha um exercicio para adicionar à sua lista:</string>
     <string name="search_exercise">Pesquisa exercicio</string>
+    <string name="your_exercises">Seus Exercicios</string>
+    <string name="my_exercises">Meus Exercicios</string>
 </resources>
