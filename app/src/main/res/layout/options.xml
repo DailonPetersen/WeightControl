@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:background="@color/color_one">
 
     <androidx.cardview.widget.CardView
@@ -20,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:textColor="@color/color_five"
             android:text="@string/my_exercises"
             android:textSize="20sp"
             android:textStyle="bold" />
