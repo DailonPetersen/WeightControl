@@ -1,10 +1,7 @@
 package com.example.weigthcontrol.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.weigthcontrol.data.model.Exercise
 
 @Dao
@@ -19,4 +16,6 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise WHERE exercId = 0")
     suspend fun getFirstExercise(): Exercise
 
+    @Delete
+    suspend fun deleteExercise(exercise: Exercise)
 }

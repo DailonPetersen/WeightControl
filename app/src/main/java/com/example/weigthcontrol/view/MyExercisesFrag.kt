@@ -17,8 +17,8 @@ class MyExercisesFrag: Fragment() {
 
     private var _binding: MyExercisesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ExerciseViewModel by viewModels()
     private lateinit var contextFragment: MainActivity
+    private val viewModel: ExerciseViewModel by viewModels()
     private var adapter: ExerciseAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -36,14 +36,12 @@ class MyExercisesFrag: Fragment() {
 
         viewModel.mutableLiveDataListExercise.observe(viewLifecycleOwner, {
             binding.recyclerView.layoutManager = LinearLayoutManager(contextFragment)
-            adapter = ExerciseAdapter(it)
+            adapter = ExerciseAdapter(contextFragment, it, viewModel)
             adapter!!.notifyDataSetChanged()
             binding.recyclerView.adapter = adapter
         })
 
-        binding.updateRecycler.setOnClickListener {
-            viewModel.getAllExercises(contextFragment)
-        }
+        viewModel.getAllExercises(contextFragment)
 
         return binding.root
     }
@@ -52,4 +50,8 @@ class MyExercisesFrag: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+}
+
+interface ItemDeletedInterface {
+    fun onItemDeleted()
 }

@@ -8,6 +8,7 @@ import com.example.weigthcontrol.data.model.Exercise
 import kotlinx.coroutines.*
 
 class ExerciseRepo() {
+
     companion object {
 
         private lateinit var INSTANCE: WeigthRegistrysDataBase
@@ -22,6 +23,14 @@ class ExerciseRepo() {
                 INSTANCE.exerciseDao().insertExercise(exercise)
             }
         }
+
+        fun deleteExercise(context: Context, exercise: Exercise){
+            val db = WeigthRegistrysDataBase.getInstanceDatabase(context)
+            runBlocking {
+                INSTANCE.exerciseDao().deleteExercise(exercise)
+            }
+        }
+
         private lateinit var exercise: Exercise
         fun getFirstExercise(context: Context): Exercise {
             initializeDatabaseInstance(context)

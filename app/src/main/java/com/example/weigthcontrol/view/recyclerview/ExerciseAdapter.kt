@@ -1,29 +1,39 @@
 package com.example.weigthcontrol.view.recyclerview
 
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weigthcontrol.R
 import com.example.weigthcontrol.data.model.Exercise
+import com.example.weigthcontrol.databinding.ItemExerciseBinding
+import com.example.weigthcontrol.view.ItemDeletedInterface
+import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 
-class ExerciseAdapter(private val exerciseList: List<Exercise>?) :
-    RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
+class ExerciseAdapter(private val context: Context, private val exerciseList: List<Exercise>, val viewModel: ExerciseViewModel): RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(), ItemDeletedInterface {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val exerciseName: TextView = view.findViewById(R.id.exerciseName)
+    inner class ExerciseViewHolder(val itemExerciseBinding: ItemExerciseBinding): RecyclerView.ViewHolder(itemExerciseBinding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
+        val binding = ItemExerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ExerciseViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
-        return ViewHolder(view)
+    override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
+        with(holder) {
+            with(exerciseList[position]){
+                itemExerciseBinding.exerciseName.text = this.name
+                itemExerciseBinding.deleteItem.setOnClickListener {
+                    viewModel.deleteExercise(context, exerciseList[position])
+                    onItemDeleted()
+                }
+            }
+        }
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.exerciseName.text = exerciseList!![position].name
-    }
+    override fun getItemCount() = exerciseList.size
 
-    override fun getItemCount() = exerciseList!!.size
+    override fun onItemDeleted() {
+        viewModel.getAllExercises(context)
+    }
 }

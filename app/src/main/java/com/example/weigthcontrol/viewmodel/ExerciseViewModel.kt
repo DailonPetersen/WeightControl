@@ -26,6 +26,10 @@ class ExerciseViewModel: ViewModel() {
         getAllExercises(context)
     }
 
+    fun deleteExercise(context: Context, exercise: Exercise) {
+        ExerciseRepo.deleteExercise(context, exercise)
+    }
+
     fun getAllExercises(context: Context): MutableLiveData<List<Exercise>> {
         listExercise = ExerciseRepo.getAllExercises(context)
         listExercise?.let {
