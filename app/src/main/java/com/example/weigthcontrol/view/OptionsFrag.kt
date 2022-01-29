@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.weigthcontrol.R
-import com.example.weigthcontrol.databinding.MyExercisesBinding
 import com.example.weigthcontrol.databinding.OptionsBinding
 
-class OptionsFrag: Fragment() {
+class OptionsFrag : Fragment() {
 
     private var _binding: OptionsBinding? = null
     private val binding get() = _binding!!
@@ -21,9 +20,21 @@ class OptionsFrag: Fragment() {
     ): View {
         _binding = OptionsBinding.inflate(inflater, container, false)
 
-        binding.optionMyExercises.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainer, MyExercisesFrag()).commit()
-        }
+//        binding.optionMyExercises.setOnClickListener {
+//            parentFragmentManager
+//                .beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.out)
+//                .replace(R.id.fragmentContainer, MyExercisesFrag())
+//                .addToBackStack("MyExerciseList")
+//                .commit()
+//        }
+//
+//        binding.optionMyProfile.setOnClickListener {
+//            parentFragmentManager
+//                .beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.out)
+//                .replace(R.id.fragmentContainer, MyDataFrag())
+//                .addToBackStack("MyDataList")
+//                .commit()
+//        }
 
         return binding.root
     }

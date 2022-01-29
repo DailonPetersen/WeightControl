@@ -1,69 +1,89 @@
 package com.example.weigthcontrol.view.recyclerview
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.opengl.Visibility
-import android.view.Gravity
+import android.animation.LayoutTransition
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weigthcontrol.R
-import com.example.weigthcontrol.data.model.Exercise
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import com.example.weigthcontrol.data.model.ExerciseWithRegistries
 import com.example.weigthcontrol.databinding.ItemExerciseBinding
-import com.example.weigthcontrol.view.ItemDeletedInterface
+import com.example.weigthcontrol.view.*
+import com.example.weigthcontrol.view.OnButtonClicked
 import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 
-class ExerciseAdapter(private val context: Context, private val exerciseList: List<Exercise>, val viewModel: ExerciseViewModel): RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(), ItemDeletedInterface {
+class ExerciseAdapter(private val context: Activity, private val exerciseList: List<ExerciseWithRegistries>, val viewModel: ExerciseViewModel): RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(), ItemDeletedInterface {
 
-    inner class ExerciseViewHolder(val itemExerciseBinding: ItemExerciseBinding): RecyclerView.ViewHolder(itemExerciseBinding.root)
+    var lastItemClicked = -1
+    private var adapter: RegistryAdapter? = null
+    private val viewPool = RecycledViewPool()
+
+    inner class ExerciseViewHolder(val itemExerciseBinding: ItemExerciseBinding): RecyclerView.ViewHolder(itemExerciseBinding.root) {
+        init {
+            val layoutTransition: LayoutTransition = itemExerciseBinding.itemList.getLayoutTransition()
+            layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+            itemExerciseBinding.exerciseName.setOnClickListener {
+                lastItemClicked = bindingAdapterPosition
+                notifyDataSetChanged()
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val binding = ItemExerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ExerciseViewHolder(binding)
     }
 
+    val listener = object: OnButtonClicked {
+        override fun clicked(dialog: DialogFragment) {
+            dialog.dismiss()
+        }
+    }
+
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
-        with(holder) {
-            with(exerciseList[position]){
-                itemExerciseBinding.exerciseName.text = this.name
-                itemExerciseBinding.deleteItem.setOnClickListener {
-//                    viewModel.deleteExercise(context, exerciseList[position])
-//                    onItemDeleted()
+        val exerciseItem = exerciseList[position]
+        holder.itemExerciseBinding.exerciseName.text = exerciseItem.exercise!!.name
 
-                    val layout = LinearLayout(context)
-                    val editTextView = EditText(context)
-                    val imageView = ImageView(context)
-                    val datePickerView = DatePicker(context)
+        val layoutManager = LinearLayoutManager(holder.itemExerciseBinding.recyclerViewRegistry.context, LinearLayoutManager.VERTICAL, false)
 
-                    val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                    layout.setBackgroundColor(Color.RED)
-                    layout.layoutParams = layoutParams
-                    layout.orientation = LinearLayout.HORIZONTAL
-
-                    val editParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 7F)
-                    editParams.setMargins(8,8,8,8)
-                    editTextView.layoutParams = editParams
-
-                    val imageViewParams = LinearLayout.LayoutParams(0, 80, 1F)
-                    imageViewParams.gravity = (Gravity.CENTER_VERTICAL and Gravity.CENTER_HORIZONTAL)
-                    imageView.setImageResource(R.drawable.ic_calendar)
-                    imageView.layoutParams = imageViewParams
-
-                    datePickerView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                    datePickerView.visibility = View.GONE
-
-                    layout.addView(editTextView)
-                    layout.addView(imageView)
-                    layout.addView(datePickerView)
-
-                    itemExerciseBinding.itemList.findViewById<LinearLayout>(R.id.relativeLayout).addView(layout)
-                }
-            }
+        if (!exerciseItem.listRegistries.isNullOrEmpty()) {
+            layoutManager.initialPrefetchItemCount = exerciseItem.listRegistries.size
+        } else {
+            layoutManager.initialPrefetchItemCount = 0
         }
 
+        adapter = RegistryAdapter(context, exerciseItem, viewModel)
+
+        holder.itemExerciseBinding.recyclerViewRegistry.layoutManager = layoutManager
+        holder.itemExerciseBinding.recyclerViewRegistry.adapter = adapter
+        holder.itemExerciseBinding.recyclerViewRegistry.setRecycledViewPool(viewPool)
+
+        val fragmentManager = (holder.itemView.context as FragmentActivity).supportFragmentManager
+
+//        holder.itemExerciseBinding.addRegistryButton.setOnClickListener {
+//            val dialog = InsertRegistryDialog(context, listener)
+//            dialog.show(fragmentManager, dialog.tag)
+//        }
+
+        if(lastItemClicked == position) {
+            if (holder.itemExerciseBinding.listRegistrys.visibility == View.VISIBLE) {
+//                holder.itemExerciseBinding.expandableView.visibility = View.GONE
+                holder.itemExerciseBinding.listRegistrys.visibility = View.GONE
+//                holder.itemExerciseBinding.expandButton.rotation = 270.0F
+            } else {
+//                holder.itemExerciseBinding.expandableView.visibility = View.VISIBLE
+                holder.itemExerciseBinding.listRegistrys.visibility = View.VISIBLE
+//                holder.itemExerciseBinding.expandButton.rotation = 0.0F
+            }
+        } else {
+//            holder.itemExerciseBinding.expandableView.visibility = View.GONE
+            holder.itemExerciseBinding.listRegistrys.visibility = View.GONE
+//            holder.itemExerciseBinding.expandButton.rotation = 270.0F
+        }
     }
 
     override fun getItemCount() = exerciseList.size

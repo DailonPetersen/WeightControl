@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.weigthcontrol.MainActivity
 import com.example.weigthcontrol.data.model.Exercise
 import com.example.weigthcontrol.databinding.InsertExerciseDialogBinding
-import com.example.weigthcontrol.OnButtonClicked
 import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 
-class InsertExerciseDialogFrag(val onButtonClickedReceipt: OnButtonClicked): DialogFragment() {
+class InsertExerciseDialogFrag(private val onButtonClickedReceipt: OnButtonClicked): DialogFragment() {
 
     private var _binding: InsertExerciseDialogBinding? = null
     private val binding get() = _binding!!
@@ -40,17 +37,15 @@ class InsertExerciseDialogFrag(val onButtonClickedReceipt: OnButtonClicked): Dia
         super.onViewCreated(view, savedInstanceState)
 
         binding.addNewExercise.setOnClickListener {
-            val exerciseSelected = binding.spinnerExercises.selectedItem
-            val exercise = Exercise(exerciseSelected.toString())
+            val exerciseName = binding.newExerciseInput.text.toString()
+            val exercise = Exercise(exerciseName)
             viewModel.insertExercise(contextFragment, exercise)
             onButtonClickedReceipt.clicked(this)
         }
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

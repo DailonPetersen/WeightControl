@@ -11,7 +11,7 @@ import com.example.weigthcontrol.data.model.Registry
 import com.example.weigthcontrol.data.dao.RegistryDao
 import com.example.weigthcontrol.data.model.Exercise
 
-@Database(entities = [Registry::class, Exercise::class], version = 5, exportSchema = false)
+@Database(entities = [Registry::class, Exercise::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class WeigthRegistrysDataBase: RoomDatabase() {
 
@@ -29,7 +29,7 @@ abstract class WeigthRegistrysDataBase: RoomDatabase() {
                         context.applicationContext,
                         WeigthRegistrysDataBase::class.java,
                         "weigth_registry_db"
-                    ).build()
+                    ).fallbackToDestructiveMigration().build()
                 }
             }
             return INSTANCE!!

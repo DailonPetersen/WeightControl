@@ -1,4 +1,3 @@
 package com.example.weigthcontrol.data.model
 
-class ExerciseWithRegistrys {
-}
+data class ExerciseWithRegistries(val exercise: Exercise? = null, val listRegistries: List<Registry>? = null)

@@ -16,6 +16,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise WHERE exercId = 0")
     suspend fun getFirstExercise(): Exercise
 
+    @Query("SELECT * FROM exercise WHERE exercId = :exerciseId")
+    suspend fun getExerciseById(exerciseId: Int): Exercise
+
     @Delete
     suspend fun deleteExercise(exercise: Exercise)
 }

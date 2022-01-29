@@ -1,10 +1,7 @@
 package com.example.weigthcontrol.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.weigthcontrol.data.model.Registry
 
 @Dao
@@ -18,4 +15,10 @@ interface RegistryDao {
 
     @Query("SELECT * FROM registry")
     suspend fun getAllRegistry(): List<Registry>
+
+    @Delete
+    suspend fun deleteRegistry(registry: Registry)
+
+    @Query("SELECT * FROM registry WHERE exerciseId = :exerciseId")
+    suspend fun getRegistriesByExercise(exerciseId: Int): List<Registry>
 }

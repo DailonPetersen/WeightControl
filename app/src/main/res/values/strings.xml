@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">WeigthControl</string>
     <string name="adicionar">Adicionar</string>
-    <string name="pick_exercise">Escolha um exercicio para adicionar à sua lista:</string>
+    <string name="type_exercise">Digite o nome do exercicio:</string>
     <string name="search_exercise">Pesquisa exercicio</string>
-    <string name="your_exercises">Seus Exercicios</string>
+    <string name="desc_exercises">histórico de cargas dos seus exercicios.</string>
+    <string name="desc_data">gráfico representando sua evolução nas cargas.</string>
     <string name="my_exercises">Meus Exercicios</string>
+    <string name="my_profile">Meu Perfil</string>
+    <string name="label_input_weigth">Peso utilizado:</string>
+    <string name="label_select_exercise">Selecione o exercicio:</string>
+    <string name="details">Detalhes</string>
+    <string name="peso">+ PESO</string>
+    <string name="exercicio">+ EXERCICIO</string>
+    <string name="date_label">data</string>
+    <string name="weigth_label">peso</string>
 </resources>

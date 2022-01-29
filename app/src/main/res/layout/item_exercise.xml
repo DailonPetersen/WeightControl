@@ -1,34 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemList"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="2sp"
+    android:orientation="vertical"
+    app:cardUseCompatPadding="true"
+    android:animateLayoutChanges="true">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/itemList"
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:id="@+id/wrapperLayout"-->
+<!--        android:padding="5dp"-->
+<!--        android:animateLayoutChanges="true">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:id="@+id/fixedLayout"-->
+<!--            android:outlineSpotShadowColor="@color/color_one">-->
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp">
+        android:layout_height="match_parent">
 
-        <TextView
+            <TextView
+                android:id="@+id/exerciseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="17sp"
+                android:paddingVertical="10dp"
+                android:textStyle="bold"
+                app:drawableEndCompat="@drawable/ic_arrow_down" />
+
+<!--            <ImageView-->
+<!--                android:id="@+id/expandButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end|center_vertical"-->
+<!--                android:contentDescription="@string/details"-->
+<!--                app:srcCompat="@drawable/ic_arrow_down" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_below="@+id/exerciseName"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:id="@+id/expandableView"-->
+<!--            android:visibility="visible">-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/addRegistryButton"-->
+<!--                android:textSize="12sp"-->
+<!--                android:text="Adicione novo peso"/>-->
+
+<!--        </LinearLayout>-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/exerciseName"
-            android:layout_margin="8dp"/>
+            android:id="@+id/listRegistrys"
+            android:layout_below="@+id/exerciseName"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:visibility="visible">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="8dp"
-            android:id="@+id/deleteItem"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_baseline_delete"
-            android:contentDescription="Detalhes"
-            tools:ignore="VectorDrawableCompat"/>
-    </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:id="@+id/registryDate"
+                    android:textColor="@color/black"
+                    android:textStyle="italic"
+                    android:text="@string/date_label"/>
 
-</LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:id="@+id/registryWeigth"
+                    android:text="@string/weigth_label"
+                    android:textStyle="italic"
+                    android:textColor="@color/black"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete_registry_icon"
+                    android:id="@+id/deleteItemRegistry"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRegistry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_registry"
+                android:padding="3sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+<!--    </LinearLayout>-->
+</androidx.cardview.widget.CardView>

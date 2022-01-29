@@ -8,6 +8,7 @@ android {
     compileSdkVersion 30
 
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 
@@ -49,6 +50,9 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    // Graph View Library
+    implementation 'com.jjoe64:graphview:4.2.2'
 
     // Navigation Component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'

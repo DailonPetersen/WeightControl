@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/insertRegistryDialog"
+    android:padding="30dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/labelSelectExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/rubikregular"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:text="@string/label_select_exercise"
+            android:textSize="19sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerExercises"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteView"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:padding="0dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/topLayout"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/labelInputWeigth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubikregular"
+            android:textColor="@color/black"
+            android:gravity="start"
+            android:text="@string/label_input_weigth"
+            android:textSize="19sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputWeigth"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:padding="5dp"
+                android:fontFamily="@font/rubikitalic" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/mainLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JAN 01 2020"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/rubikregular"
+        android:id="@+id/pickDateButton"
+        android:textSize="25sp"
+        style="?android:spinnerStyle"
+        android:textColor="@color/black"
+        android:paddingHorizontal="35dp" />
+
+    <Button
+        android:layout_below="@+id/pickDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Finalizar"
+        android:id="@+id/insertRegistry"/>
+</RelativeLayout>

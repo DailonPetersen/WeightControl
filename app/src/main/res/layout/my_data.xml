@@ -3,40 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical">
+    android:layout_gravity="center_vertical"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/labelOption_myExercises"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/desc_data"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCard"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCard"
-        android:layout_margin="8dp"
-        android:text="@string/your_exercises"
-        android:textColor="@color/color_letters"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/recyclerViewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerViewCard"
-        app:layout_constraintRight_toRightOf="parent"
+        android:elevation="2dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelOption_myExercises"
-        android:elevation="2dp">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelOption_myExercises">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_exercise"
-            android:padding="3sp"/>
+            android:clipToPadding="false"
+            android:padding="3dp"
+            tools:listitem="@layout/item_data" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

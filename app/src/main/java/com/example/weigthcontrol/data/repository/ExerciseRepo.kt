@@ -12,7 +12,7 @@ class ExerciseRepo() {
     companion object {
 
         private lateinit var INSTANCE: WeigthRegistrysDataBase
-
+        private lateinit var exercise: Exercise
         private fun initializeDatabaseInstance(context: Context) {
             INSTANCE = WeigthRegistrysDataBase.getInstanceDatabase(context)
         }
@@ -25,13 +25,19 @@ class ExerciseRepo() {
         }
 
         fun deleteExercise(context: Context, exercise: Exercise){
-            val db = WeigthRegistrysDataBase.getInstanceDatabase(context)
             runBlocking {
                 INSTANCE.exerciseDao().deleteExercise(exercise)
             }
         }
 
-        private lateinit var exercise: Exercise
+        fun getExerciseById(context: Context, exerciseId: Int): Exercise {
+            initializeDatabaseInstance(context)
+            CoroutineScope(Dispatchers.IO).launch {
+                exercise = INSTANCE.exerciseDao().getExerciseById(exerciseId)
+            }
+            return exercise
+        }
+
         fun getFirstExercise(context: Context): Exercise {
             initializeDatabaseInstance(context)
             runBlocking {

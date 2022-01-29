@@ -1,4 +1,4 @@
-package com.example.weigthcontrol.view.`interface`
+package com.example.weigthcontrol.view
 
 import androidx.fragment.app.DialogFragment
 
