@@ -12,28 +12,26 @@ import com.example.weigthcontrol.data.dao.RegistryDao
 import com.example.weigthcontrol.data.model.Exercise
 
 @Database(entities = [Registry::class, Exercise::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
-abstract class WeigthRegistrysDataBase: RoomDatabase() {
+abstract class WeigthRegistrysDataBase : RoomDatabase() {
 
     abstract fun registryDao(): RegistryDao
     abstract fun exerciseDao(): ExerciseDao
 
     companion object {
-
+        @Volatile
         private var INSTANCE: WeigthRegistrysDataBase? = null
 
         fun getInstanceDatabase(context: Context): WeigthRegistrysDataBase {
-            synchronized(lock = Any()){
-                if(INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        WeigthRegistrysDataBase::class.java,
-                        "weigth_registry_db"
-                    ).fallbackToDestructiveMigration().build()
-                }
+            return INSTANCE ?: synchronized(lock = Any()){
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    WeigthRegistrysDataBase::class.java,
+                    "weigth_registry_db"
+                ).fallbackToDestructiveMigration().build()
+                INSTANCE = instance
+                instance
             }
-            return INSTANCE!!
         }
     }
-
 }
+

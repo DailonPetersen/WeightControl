@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.weigthcontrol.MainActivity
+import com.example.weigthcontrol.data.database.WeigthRegistrysDataBase
 import com.example.weigthcontrol.data.model.Exercise
+import com.example.weigthcontrol.data.repository.ExerciseDataSource
+import com.example.weigthcontrol.data.repository.RegistryDataSource
 import com.example.weigthcontrol.databinding.InsertExerciseDialogBinding
 import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 
@@ -16,12 +20,21 @@ class InsertExerciseDialogFrag(private val onButtonClickedReceipt: OnButtonClick
 
     private var _binding: InsertExerciseDialogBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ExerciseViewModel by viewModels()
     private lateinit var contextFragment: MainActivity
+
+    private val viewModel: ExerciseViewModel by viewModels(
+        factoryProducer = {
+            val database = WeigthRegistrysDataBase.getInstanceDatabase(contextFragment)
+
+            ExerciseViewModel.ViewModelFactory(
+                registryRepo = RegistryDataSource(database.registryDao()),
+                exerciseRepo = ExerciseDataSource(database.exerciseDao())
+            )
+        }
+    )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        contextFragment = context as MainActivity
     }
 
     override fun onCreateView(
@@ -35,11 +48,12 @@ class InsertExerciseDialogFrag(private val onButtonClickedReceipt: OnButtonClick
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        contextFragment = context as MainActivity
 
         binding.addNewExercise.setOnClickListener {
             val exerciseName = binding.newExerciseInput.text.toString()
             val exercise = Exercise(exerciseName)
-            viewModel.insertExercise(contextFragment, exercise)
+            viewModel.insertExercise(exercise)
             onButtonClickedReceipt.clicked(this)
         }
     }

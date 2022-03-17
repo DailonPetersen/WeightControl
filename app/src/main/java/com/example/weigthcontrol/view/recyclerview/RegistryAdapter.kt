@@ -28,28 +28,20 @@ class RegistryAdapter(private val context: Context, private val item: ExerciseWi
     }
 
     override fun getItemCount(): Int {
-        if (item.listRegistries != null) {
-            if(item.listRegistries.size > limit) {
-                return limit
-            } else
-                return item.listRegistries.size
-        } else {
-            return -0
-        }
+        if(item.listRegistries.size > limit) {
+            return limit
+        } else
+            return item.listRegistries.size
     }
 
     override fun onBindViewHolder(holder: RegistryViewHolder, position: Int) {
-
         if (!item.listRegistries.isNullOrEmpty()) {
             val registryItem = item.listRegistries.get(position)
-
             with(holder) {
-                itemRegistryBinding.registryDate.text = registryItem.timestamp
-                itemRegistryBinding.registryWeigth.text = registryItem.weight.toString() + "kg"
-
+                itemRegistryBinding.registryDate.text = DateFormat.format("dd/MM/yyyy", ).toString()
+                itemRegistryBinding.registryWeigth.text = "${registryItem.weight.toString()} + kg"
                 itemRegistryBinding.deleteItemRegistry.setOnClickListener {
-                    viewModel.deleteRegistry(context, registryItem)
-                    viewModel.getAllExercises(context)
+                    viewModel.deleteRegistry(registryItem)
                 }
             }
         }

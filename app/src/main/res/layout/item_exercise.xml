@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<androidx.cardview.widget.CardView
     android:id="@+id/itemList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,62 +13,20 @@
     app:cardUseCompatPadding="true"
     android:animateLayoutChanges="true">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        android:id="@+id/wrapperLayout"-->
-<!--        android:padding="5dp"-->
-<!--        android:animateLayoutChanges="true">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:id="@+id/fixedLayout"-->
-<!--            android:outlineSpotShadowColor="@color/color_one">-->
-
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/wrapperLayoutList"
+        android:paddingHorizontal="10dp">
 
             <TextView
                 android:id="@+id/exerciseName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
                 android:textSize="17sp"
                 android:paddingVertical="10dp"
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/ic_arrow_down" />
-
-<!--            <ImageView-->
-<!--                android:id="@+id/expandButton"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="end|center_vertical"-->
-<!--                android:contentDescription="@string/details"-->
-<!--                app:srcCompat="@drawable/ic_arrow_down" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_below="@+id/exerciseName"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:id="@+id/expandableView"-->
-<!--            android:visibility="visible">-->
-
-<!--            <Button-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/addRegistryButton"-->
-<!--                android:textSize="12sp"-->
-<!--                android:text="Adicione novo peso"/>-->
-
-<!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,6 +51,12 @@
                     android:textColor="@color/black"
                     android:textStyle="italic"
                     android:text="@string/date_label"/>
+
+                <TextView
+                    android:id="@+id/positionExercise"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -118,5 +84,5 @@
                 android:padding="3sp"/>
         </LinearLayout>
     </RelativeLayout>
-<!--    </LinearLayout>-->
 </androidx.cardview.widget.CardView>
+</layout>

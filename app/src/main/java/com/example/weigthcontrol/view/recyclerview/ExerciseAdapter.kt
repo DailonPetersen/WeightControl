@@ -71,24 +71,18 @@ class ExerciseAdapter(private val context: Activity, private val exerciseList: L
 
         if(lastItemClicked == position) {
             if (holder.itemExerciseBinding.listRegistrys.visibility == View.VISIBLE) {
-//                holder.itemExerciseBinding.expandableView.visibility = View.GONE
                 holder.itemExerciseBinding.listRegistrys.visibility = View.GONE
-//                holder.itemExerciseBinding.expandButton.rotation = 270.0F
             } else {
-//                holder.itemExerciseBinding.expandableView.visibility = View.VISIBLE
                 holder.itemExerciseBinding.listRegistrys.visibility = View.VISIBLE
-//                holder.itemExerciseBinding.expandButton.rotation = 0.0F
             }
         } else {
-//            holder.itemExerciseBinding.expandableView.visibility = View.GONE
             holder.itemExerciseBinding.listRegistrys.visibility = View.GONE
-//            holder.itemExerciseBinding.expandButton.rotation = 270.0F
         }
     }
 
     override fun getItemCount() = exerciseList.size
 
     override fun onItemDeleted() {
-        viewModel.getAllExercises(context)
+        viewModel.getAllRegistry()
     }
 }

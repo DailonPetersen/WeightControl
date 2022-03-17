@@ -7,56 +7,35 @@ import com.example.weigthcontrol.data.database.WeigthRegistrysDataBase
 import com.example.weigthcontrol.data.model.Exercise
 import kotlinx.coroutines.*
 
-class ExerciseRepo() {
+interface ExerciseRepo {
 
-    companion object {
+    suspend fun getAllExercises(): List<Exercise>?
+    suspend fun getExerciseById(exerciseId: Int): Exercise
+    suspend fun insertExercise(exercise: Exercise)
+    suspend fun deleteExercise(exercise: Exercise)
+    suspend fun deleteAllExercise()
+}
 
-        private lateinit var INSTANCE: WeigthRegistrysDataBase
-        private lateinit var exercise: Exercise
-        private fun initializeDatabaseInstance(context: Context) {
-            INSTANCE = WeigthRegistrysDataBase.getInstanceDatabase(context)
-        }
+class ExerciseDataSource(private val exerciseDao: ExerciseDao): ExerciseRepo {
 
-        fun insertExercise(context: Context, exercise: Exercise) {
-            initializeDatabaseInstance(context)
-            CoroutineScope(Dispatchers.IO).launch {
-                INSTANCE.exerciseDao().insertExercise(exercise)
-            }
-        }
-
-        fun deleteExercise(context: Context, exercise: Exercise){
-            runBlocking {
-                INSTANCE.exerciseDao().deleteExercise(exercise)
-            }
-        }
-
-        fun getExerciseById(context: Context, exerciseId: Int): Exercise {
-            initializeDatabaseInstance(context)
-            CoroutineScope(Dispatchers.IO).launch {
-                exercise = INSTANCE.exerciseDao().getExerciseById(exerciseId)
-            }
-            return exercise
-        }
-
-        fun getFirstExercise(context: Context): Exercise {
-            initializeDatabaseInstance(context)
-            runBlocking {
-                exercise = INSTANCE.exerciseDao().getFirstExercise()
-            }
-            return exercise
-        }
-
-        private var list: List<Exercise>? = null
-        fun getAllExercises(context: Context): List<Exercise>? {
-            initializeDatabaseInstance(context)
-            runBlocking {
-                list = INSTANCE.exerciseDao().getAllExercises()
-            }
-            return if (list != null){
-                list
-            } else {
-                null
-            }
-        }
+    override suspend fun getAllExercises(): List<Exercise>? {
+        return exerciseDao.getAllExercises()
     }
+
+    override suspend fun getExerciseById(exerciseId: Int): Exercise {
+        return exerciseDao.getExerciseById(exerciseId)
+    }
+
+    override suspend fun insertExercise(exercise: Exercise) {
+        exerciseDao.insertExercise(exercise)
+    }
+
+    override suspend fun deleteExercise(exercise: Exercise) {
+        exerciseDao.deleteExercise(exercise)
+    }
+
+    override suspend fun deleteAllExercise() {
+        exerciseDao.deleteAllExercise()
+    }
+
 }

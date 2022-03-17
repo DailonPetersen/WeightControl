@@ -1,96 +1,125 @@
 package com.example.weigthcontrol.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.weigthcontrol.data.database.WeigthRegistrysDataBase
 import com.example.weigthcontrol.data.model.Exercise
 import com.example.weigthcontrol.data.model.ExerciseWithRegistries
 import com.example.weigthcontrol.data.model.Registry
+import com.example.weigthcontrol.data.repository.ExerciseDataSource
 import com.example.weigthcontrol.data.repository.ExerciseRepo
+import com.example.weigthcontrol.data.repository.RegistryDataSource
 import com.example.weigthcontrol.data.repository.RegistryRepo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class ExerciseViewModel: ViewModel() {
+class ExerciseViewModel(
+    val registryRepo: RegistryRepo,
+    val exerciseRepo: ExerciseRepo
+): ViewModel() {
+
+    class ViewModelFactory(private val registryRepo: RegistryRepo, private val exerciseRepo: ExerciseRepo) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(ExerciseViewModel::class.java)) {
+                return ExerciseViewModel(registryRepo, exerciseRepo) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
 
     var listExercise: List<Exercise>? = null
     var listRegistry: List<Registry>? = null
     var listRegistriesByExercise: List<Registry>? = null
-    var exercise: Exercise? = null
 
-    val mutableLiveDataExercise = MutableLiveData<Exercise>()
-    val mutableLiveDataListExercise = MutableLiveData<List<Exercise>>()
-    val mutableLiveDataRegistry = MutableLiveData<List<Registry>>()
-    val mutableLiveDataExerciseWithRegistries = MutableLiveData<List<ExerciseWithRegistries>>()
+    private val _mutableLiveDataExercise = MutableLiveData<List<Exercise>>()
+    val mutableLiveDataExercise: LiveData<List<Exercise>>
+        get() = _mutableLiveDataExercise
 
-    fun getModelsRegistriesByExercise(context: Context, listExercise: List<Exercise>): List<ExerciseWithRegistries> {
+    private val _mutableLiveDataRegistry = MutableLiveData<List<Registry>>()
+    val mutableLiveDataRegistry: LiveData<List<Registry>>
+        get() = _mutableLiveDataRegistry
+
+    private val _mutableLiveDataExerciseWithRegistries = MutableLiveData<List<ExerciseWithRegistries>>()
+    val mutableLiveDataExerciseWithRegistries: LiveData<List<ExerciseWithRegistries>>
+        get() = _mutableLiveDataExerciseWithRegistries
+
+    fun getModelsRegistriesByExercise() {
 
         val listModels = mutableListOf<ExerciseWithRegistries>()
 
-        for (exercise in listExercise) {
-            val list = getRegistriesByExercise(context, exercise.exercId)
-            lateinit var model: ExerciseWithRegistries
-
-            if(!list.isNullOrEmpty()){
-                model = ExerciseWithRegistries(exercise, list)
-                listModels.add(model)
-            }
-            mutableLiveDataExerciseWithRegistries.value = listModels
-        }
-        return mutableLiveDataExerciseWithRegistries.value!!
-    }
-
-    fun getExeciseById(context: Context, exerciseId: Int): Exercise {
-        val exercise = ExerciseRepo.getExerciseById(context, exerciseId)
-        return exercise
-    }
-
-    fun getRegistriesByExercise(context: Context, exerciseId: Int): List<Registry>? {
-        listRegistriesByExercise = RegistryRepo.getRegistriesByExercise(context, exerciseId)
-        listRegistriesByExercise?.let {
-            return listRegistriesByExercise
-        }
-        return null
-    }
-
-    fun insertExercise(context: Context, exercise: Exercise) {
-        ExerciseRepo.insertExercise(context, exercise)
-    }
-
-    fun deleteExercise(context: Context, exercise: Exercise) {
-        ExerciseRepo.deleteExercise(context, exercise)
-    }
-
-    fun deleteRegistry(context: Context, registry: Registry) {
-        RegistryRepo.deleteRegistry(context, registry)
-    }
-
-    fun getAllExercises(context: Context): MutableLiveData<List<Exercise>> {
-        listExercise = ExerciseRepo.getAllExercises(context)
+        val listExercise = getAllExercises()
         listExercise?.let {
-            mutableLiveDataListExercise.value = it
+            for (exercise in it) {
+                val registriesByExercise = getRegistriesByExercise(exercise.exercId)
+                if (!registriesByExercise.isNullOrEmpty()) {
+                    listModels.add(ExerciseWithRegistries(exercise, registriesByExercise))
+                }
+            }
         }
-        return mutableLiveDataListExercise
+        _mutableLiveDataExerciseWithRegistries.value = listModels
+
     }
 
-    fun getFirstExercise(context: Context): MutableLiveData<Exercise> {
-        exercise = ExerciseRepo.getFirstExercise(context)
-        exercise?.let {
-            mutableLiveDataExercise.value = it
+//    fun getExeciseById(context: Context, exerciseId: Int): Exercise {
+//        viewModelScope.launch(Dispatchers.IO {
+//            val exercise = ExerciseRepo.getE                   xerciseById(context, exerciseId)
+//        }
+//    }
+
+    fun getRegistriesByExercise(exerciseId: Int): List<Registry>? {
+        runBlocking {
+            listRegistriesByExercise = registryRepo.getRegistriesByExercise(exerciseId)
         }
-        return mutableLiveDataExercise
+        return if (!listRegistriesByExercise.isNullOrEmpty()) {
+            listRegistriesByExercise
+        } else null
     }
 
-    fun insertRegistry(context: Context, registry: Registry) {
-        RegistryRepo.insertRegistry(context, registry)
-        getAllExercises(context)
+    fun insertExercise(exercise: Exercise) = viewModelScope.launch(Dispatchers.IO) {
+        exerciseRepo.insertExercise(exercise)
     }
 
-    fun getAllRegistry(context: Context): MutableLiveData<List<Registry>> {
-        listRegistry = RegistryRepo.getAll(context)
-        listRegistry?.let {
-            mutableLiveDataRegistry.value = it
+    fun deleteExercise( exercise: Exercise) = viewModelScope.launch(Dispatchers.IO) {
+        exerciseRepo.deleteExercise(exercise)
+    }
+
+    fun deleteAllExercise() = viewModelScope.launch(Dispatchers.IO) {
+        exerciseRepo.deleteAllExercise()
+    }
+
+    fun deleteAllRegistrys() = viewModelScope.launch(Dispatchers.IO) {
+        registryRepo.deleteAllRegistrys()
+    }
+
+    fun deleteRegistry(registry: Registry) {
+        viewModelScope.launch(Dispatchers.IO) {
+            registryRepo.deleteRegistry(registry)
         }
-        return mutableLiveDataRegistry
+    }
+
+    fun getAllExercises(): List<Exercise>? {
+        runBlocking {
+            listExercise = exerciseRepo.getAllExercises()
+        }
+        return if (!listExercise.isNullOrEmpty()) {
+            _mutableLiveDataExercise.value = listExercise
+            listExercise
+        } else null
+    }
+
+    fun insertRegistry(registry: Registry) = viewModelScope.launch(Dispatchers.IO) {
+        registryRepo.insertRegistry(registry)
+    }
+
+    fun getAllRegistry(): List<Registry>? {
+        viewModelScope.launch(Dispatchers.IO) {
+            listRegistry = registryRepo.getAll()
+        }
+        return if (!listRegistry.isNullOrEmpty()) {
+            _mutableLiveDataRegistry.value = listRegistry
+            listRegistry
+        } else null
     }
 }

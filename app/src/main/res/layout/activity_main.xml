@@ -84,8 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="30dp"
-        android:background="@color/white"
-
+        android:background="@drawable/cornerradiusup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -105,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:text="@string/exercicio"
+            android:text="@string/exercicio_label"
             android:textSize="13sp"
             app:shapeAppearanceOverlay="@drawable/cornerradiusup" />
 

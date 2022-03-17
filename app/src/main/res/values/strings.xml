@@ -10,8 +10,12 @@
     <string name="label_input_weigth">Peso utilizado:</string>
     <string name="label_select_exercise">Selecione o exercicio:</string>
     <string name="details">Detalhes</string>
+    <string name="exercicios">exercicios</string>
     <string name="peso">+ PESO</string>
-    <string name="exercicio">+ EXERCICIO</string>
+    <string name="exercicio_label">+ EXERCICIO</string>
     <string name="date_label">data</string>
     <string name="weigth_label">peso</string>
+    <string name="add_weigth_label">Adicionar</string>
+    <string name="kg">%d kg</string>
+
 </resources>

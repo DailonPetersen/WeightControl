@@ -8,17 +8,20 @@ import com.example.weigthcontrol.data.model.Registry
 interface RegistryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addWeightRegistry(registry: Registry)
+    fun addWeightRegistry(registry: Registry)
 
 //    @Query("SELECT * FROM registry WHERE regId = :id")
 //    suspend fun getRegistryById(id: Int): Registry
 
-    @Query("SELECT * FROM registry")
-    suspend fun getAllRegistry(): List<Registry>
+    @Query("SELECT * FROM registry ORDER BY timestamp ASC")
+    fun getAllRegistry(): List<Registry>
 
     @Delete
-    suspend fun deleteRegistry(registry: Registry)
+    fun deleteRegistry(registry: Registry)
 
-    @Query("SELECT * FROM registry WHERE exerciseId = :exerciseId")
+    @Query("SELECT * FROM registry WHERE exerciseId = :exerciseId ORDER BY timestamp ASC")
     suspend fun getRegistriesByExercise(exerciseId: Int): List<Registry>
+
+    @Query("DELETE FROM registry WHERE regId > 0")
+    suspend fun deleteAllRegistrys()
 }
