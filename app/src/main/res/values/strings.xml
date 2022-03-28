@@ -17,5 +17,8 @@
     <string name="weigth_label">peso</string>
     <string name="add_weigth_label">Adicionar</string>
     <string name="kg">%d kg</string>
+    <string name="emptyListLabel">Você ainda não adicionou nenhum registro de peso!</string>
+    <string name="deleteRegistryDescription">deleteRegistry</string>
+    <string name="weigth_btn_label">carga</string>
 
 </resources>

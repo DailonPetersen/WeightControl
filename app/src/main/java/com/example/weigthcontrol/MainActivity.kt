@@ -20,6 +20,7 @@ import com.example.weigthcontrol.data.model.Exercise
 import com.example.weigthcontrol.data.repository.ExerciseDataSource
 import com.example.weigthcontrol.data.repository.RegistryDataSource
 import com.example.weigthcontrol.view.*
+import com.example.weigthcontrol.view.viewPagerAnimator.ViewPager2HeightAnimator
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
@@ -44,40 +45,22 @@ class MainActivity : AppCompatActivity() {
         val listener = object : OnButtonClicked {
             override fun clicked(dialog: DialogFragment) {
                 dialog.dismiss()
-                viewModel.getModelsRegistriesByExercise()
             }
         }
 
-//        val exer = listOf<Exercise>(
-//            Exercise("um"),
-//            Exercise("dois"),
-//            Exercise("tres"),
-//            Exercise("quatro")
-//        )
+        val list = viewModel.getAllExercises()
+        if (list.isNullOrEmpty()) {
+            val exer = listOf<Exercise>(
+                Exercise("um"),
+                Exercise("dois"),
+                Exercise("tres"),
+                Exercise("quatro")
+            )
+            for (item in exer) {
+                viewModel.insertExercise(item)
+            }
+        }
 
-//        val reg = listOf<Registry>(
-//            Registry(DateFormat.format("dd-MM-yyyy", Date()).toString(), 1, 20),
-//            Registry(DateFormat.format("dd-MM-yyyy", Date()).toString(), 3, 20),
-//            Registry(DateFormat.format("dd-MM-yyyy", Date()).toString(), 3, 20),
-//            Registry(DateFormat.format("dd-MM-yyyy", Date()).toString(), 4, 20),
-//        )
-//
-//        for (item in reg) {
-//            viewModel.insertRegistry(this, item)
-//        }
-
-//        for (item in exer) {
-//            viewModel.insertExercise(item)
-//        }
-
-//        val list = viewModel.getAllExercises()
-//        if (list.isNullOrEmpty()){
-//            Log.d("LIST", "IS NULL")
-//        } else {
-//            for (item in list) {
-//                Log.d("Exercise >>", item.name)
-//            }
-//        }
         //viewModel.deleteAllExercise()
         binding.floatingButtonNewRegistry.setOnClickListener {
             val dialog = InsertRegistryDialog(listener)
@@ -95,7 +78,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupViews() {
         val viewPager = binding.viewPager
         val tabOptions = binding.tabOptions
-
+        val viewPagerAnimator = ViewPager2HeightAnimator()
+        viewPagerAnimator.viewPager2 = viewPager
         val adapterData = TabViewPagerAdapterData(this)
         binding.viewPager.adapter = adapterData
 
@@ -105,8 +89,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     class TabViewPagerAdapterData(fragment: FragmentActivity): FragmentStateAdapter(fragment) {
-        val tabs = arrayOf("Meus dados", "Meus Exercicios")
-        private val fragments = arrayOf(MyDataFrag(), MyExercisesFrag())
+        val tabs = arrayOf("Cargas", "Exercicios")
+        private val fragments = arrayOf(MyDataFrag(), MyNewExercisesFrag())
 
         override fun getItemCount() = fragments.size
 

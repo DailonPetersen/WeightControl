@@ -10,6 +10,7 @@ import com.example.weigthcontrol.data.model.Registry
 import com.example.weigthcontrol.databinding.ItemRegistryBinding
 import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 import android.text.format.DateFormat
+import com.example.weigthcontrol.data.Converters
 import com.example.weigthcontrol.data.model.ExerciseWithRegistries
 import java.util.*
 
@@ -38,10 +39,11 @@ class RegistryAdapter(private val context: Context, private val item: ExerciseWi
         if (!item.listRegistries.isNullOrEmpty()) {
             val registryItem = item.listRegistries.get(position)
             with(holder) {
-                itemRegistryBinding.registryDate.text = DateFormat.format("dd/MM/yyyy", ).toString()
-                itemRegistryBinding.registryWeigth.text = "${registryItem.weight.toString()} + kg"
+                itemRegistryBinding.registryDate.text = registryItem.timestamp.subSequence(0, 10)
+                itemRegistryBinding.registryWeigth.text = "${registryItem.weight.toString()}kg"
                 itemRegistryBinding.deleteItemRegistry.setOnClickListener {
                     viewModel.deleteRegistry(registryItem)
+                    viewModel.getModelsRegistriesByExercise()
                 }
             }
         }

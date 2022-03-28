@@ -24,7 +24,7 @@ import com.example.weigthcontrol.databinding.InsertRegistryDialogBinding
 import com.example.weigthcontrol.viewmodel.ExerciseViewModel
 import java.util.*
 
-class InsertRegistryDialog(private val onButtonClickedReceipt: OnButtonClicked): DialogFragment() {
+class InsertRegistryDialog(private val onButtonClickedReceipt: OnButtonClicked, private val exerciseId : Int?): DialogFragment() {
 
     private var _binding: InsertRegistryDialogBinding? = null
     private val binding get() = _binding!!
@@ -76,6 +76,10 @@ class InsertRegistryDialog(private val onButtonClickedReceipt: OnButtonClicked):
             }
             val spinnerAdapter = ArrayAdapter(contextFragment, R.layout.support_simple_spinner_dropdown_item, listNames)
             binding.autoCompleteView.setAdapter(spinnerAdapter)
+
+            if(exerciseId != null){
+                binding.autoCompleteView.setSelection(exerciseId)
+            }
         }
 
         return binding.root 
@@ -107,7 +111,7 @@ class InsertRegistryDialog(private val onButtonClickedReceipt: OnButtonClicked):
             }
 
             exerciseId?.let {
-                val registry = Registry(DateFormat.format("dd/MM/yyyy-HH:mm", calendar).toString(), it, binding.inputWeigth.text.toString().toInt())
+                val registry = Registry(DateFormat.format("dd/MM/yyyy", calendar).toString(), it, binding.inputWeigth.text.toString().toInt())
                 viewModel.insertRegistry(registry)
             }
 

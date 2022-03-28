@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/itemList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2sp"
+    android:orientation="vertical"
+    app:cardUseCompatPadding="true"
+    android:animateLayoutChanges="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wrapperLayoutList"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/exerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:padding="0dp"
+            android:id="@+id/addWeigthButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/exerciseName"
+            android:backgroundTint="@color/button_green"
+            android:text="@string/weigth_btn_label"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_add"
+            app:iconPadding="2dp"
+            app:iconGravity="textStart"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+</layout>

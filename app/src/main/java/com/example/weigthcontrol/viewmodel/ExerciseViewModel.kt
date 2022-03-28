@@ -59,7 +59,6 @@ class ExerciseViewModel(
             }
         }
         _mutableLiveDataExerciseWithRegistries.value = listModels
-
     }
 
 //    fun getExeciseById(context: Context, exerciseId: Int): Exercise {
